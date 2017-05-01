@@ -621,6 +621,7 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 - (void)viewDidDisappear:(BOOL)animated NS_REQUIRES_SUPER;
 - (void)viewWillLayoutSubviews NS_REQUIRES_SUPER;
 - (void)viewDidLayoutSubviews NS_REQUIRES_SUPER;
+- (void)slk_setupViewConstraints;
 
 @end
 
