@@ -1,5 +1,30 @@
 # Change Log
 
+<<<<<<< HEAD
+=======
+## Version 1.9.6 (unreleased)
+
+This release includes many iOS 11 and iPhone X hot fixes.
+
+##### Features:
+- Allowing color customization in typing indicator. By @dskatz22 (#613)
+- Adding support for an optional view to host outlets under the text view. By @dzenbot (#562)
+- Exposing auto-completion variables. By @dzenbot (#561)
+
+##### Hot Fixes & Enhancements:
+- Fixed the text input not being interactive on iOS 11. By @dzenbot (#624)
+- Fixed iPhone X issue where the text input bar wouldn't expand to the bottom of the screen, below the home indicator. (#619)
+- Fixed scroll view content inset adjustments on iOS 11. By @gim- (#643)
+- Fixed compiler error in example app. By @BasThomas (#629)
+- Fixed content offset for keyboard when uninverted. By @ZAndyL (#542)
+
+##### Deprecation:
+- Deprecated `-shouldProcessTextForAutoCompletion:` in favor of `-shouldProcessTextForAutoCompletion`
+
+##### CI:
+- Building the SlackTextViewController framework and running basic tests using BuddyBuild CI, against all PRs. By @dzenbot (#640)
+
+>>>>>>> 37f91f2... Update bottom margin to accommodate iPhone X home indicator (#619)
 ## [Version 1.9.5](https://github.com/slackhq/SlackTextViewController/releases/tag/v1.9.5)
 
 ##### Features:
