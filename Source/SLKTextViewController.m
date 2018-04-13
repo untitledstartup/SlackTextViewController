@@ -394,27 +394,9 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         return [self slk_appropriateBottomMargin];
     }
     
-    return [self slk_appropriateKeyboardHeightFromNotificationUserInfo:notification.userInfo];
-}
-
-- (CGFloat)slk_appropriateKeyboardHeightFromNotificationUserInfo:(NSDictionary *)info {
-    const CGRect beginRect = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
-    const CGRect endRect = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    const CGFloat bottomMargin = [self slk_appropriateBottomMargin];
+    CGRect keyboardRect = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue];
     
-    CGFloat keyboardHeight = CGRectGetHeight(endRect);
-    
-    // Due to iOS SDK changes (maybe?), origin y delta seems to be only the consistent data change to detect
-    // keyboard appearance. 
-    if (keyboardHeight == 0 || CGRectGetMinY(beginRect) < CGRectGetMinY(endRect)) {
-        return 0;
-    }
-    
-    if (keyboardHeight < bottomMargin) {
-        keyboardHeight = bottomMargin;
-    }
-    
-    return keyboardHeight;
+    return [self slk_appropriateKeyboardHeightFromRect:keyboardRect];
 }
 
 - (CGFloat)slk_appropriateKeyboardHeightFromRect:(CGRect)rect
