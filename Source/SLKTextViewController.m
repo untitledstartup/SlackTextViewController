@@ -190,7 +190,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     // Forces laying out the recently added subviews and update their constraints
     [self.view layoutIfNeeded];
-    [self slk_registerNotifications];
+    
     [UIView performWithoutAnimation:^{
         // Reloads any cached text
         [self slk_reloadTextView];
@@ -222,7 +222,6 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     // Caches the text before it's too late!
     [self cacheTextView];
-    [self slk_unregisterNotifications];
 }
 
 - (void)viewWillLayoutSubviews
@@ -386,9 +385,8 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     return [super modalPresentationStyle];
 }
 
-- (CGFloat)slk_appropriateKeyboardHeightFromNotification:(NSNotification *)notification shouldUpdate:(BOOL *)shouldUpdate
+- (CGFloat)slk_appropriateKeyboardHeightFromNotification:(NSNotification *)notification
 {
-    *shouldUpdate = YES;
     // Let's first detect keyboard special states such as external keyboard, undocked or split layouts.
     [self slk_detectKeyboardStatesInNotification:notification];
     
@@ -396,38 +394,20 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         return [self slk_appropriateBottomMargin];
     }
     
-    return [self slk_keyboardHeightFromNotification:notification shouldUpdate:shouldUpdate];
+    return [self slk_appropriateKeyboardHeightFromNotificationUserInfo:notification.userInfo];
 }
 
-- (CGFloat)slk_keyboardHeightFromNotification:(NSNotification *)notification shouldUpdate:(BOOL *)shouldUpdate {
-    NSDictionary * const info = [notification userInfo];
+- (CGFloat)slk_appropriateKeyboardHeightFromNotificationUserInfo:(NSDictionary *)info {
     const CGRect beginRect = [info[UIKeyboardFrameBeginUserInfoKey] CGRectValue];
     const CGRect endRect = [info[UIKeyboardFrameEndUserInfoKey] CGRectValue];
-    UIView * const rootView = [[[[UIApplication sharedApplication] keyWindow] rootViewController] view];
-    
-    if (!rootView) {
-        *shouldUpdate = NO;
-        return 0;
-    }
-    
     const CGFloat bottomMargin = [self slk_appropriateBottomMargin];
     
-    const CGRect convertedBeginRect = [rootView convertRect:beginRect fromView: nil];
-    const CGRect convertedEndRect = [rootView convertRect:endRect fromView: nil];
+    CGFloat keyboardHeight = CGRectGetHeight(endRect);
     
-    CGFloat keyboardHeight = 0;
-    
-    if (CGRectGetMinY(convertedBeginRect) == CGRectGetMinY(convertedEndRect)) {
-        *shouldUpdate = NO;
+    // Due to iOS SDK changes (maybe?), origin y delta seems to be only the consistent data change to detect
+    // keyboard appearance. 
+    if (keyboardHeight == 0 || CGRectGetMinY(beginRect) < CGRectGetMinY(endRect)) {
         return 0;
-    }
-    
-    if (CGRectGetMinY(convertedBeginRect) < CGRectGetMinY(convertedEndRect)) {
-        keyboardHeight = 0;
-    } else if (CGRectGetWidth(rootView.bounds) > CGRectGetWidth(convertedEndRect)) {
-        keyboardHeight = CGRectGetHeight(convertedBeginRect);
-    } else {
-        keyboardHeight = CGRectGetHeight(convertedEndRect);
     }
     
     if (keyboardHeight < bottomMargin) {
@@ -1418,23 +1398,16 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
         return;
     }
     
-    // Stores the previous keyboard height
-    BOOL shouldContinue = NO;
-    CGFloat previousKeyboardHeight = self.keyboardHC.constant;
-    CGFloat newKeyboardHeight = [self slk_appropriateKeyboardHeightFromNotification:notification shouldUpdate:&shouldContinue];
-    
-    // Stopping... No change needed.
-    if (!shouldContinue) {
-        return;
-    }
-    
     // Programatically stops scrolling before updating the view constraints (to avoid scrolling glitch).
     if (status == SLKKeyboardStatusWillShow) {
         [self.scrollViewProxy slk_stopScrolling];
     }
     
+    // Stores the previous keyboard height
+    CGFloat previousKeyboardHeight = self.keyboardHC.constant;
+    
     // Updates the height constraints' constants
-    self.keyboardHC.constant = newKeyboardHeight;
+    self.keyboardHC.constant = [self slk_appropriateKeyboardHeightFromNotification:notification];
     self.scrollViewHC.constant = [self slk_appropriateScrollViewHeight];
     
     // Updates and notifies about the keyboard status update
