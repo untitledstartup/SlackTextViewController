@@ -190,7 +190,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     // Forces laying out the recently added subviews and update their constraints
     [self.view layoutIfNeeded];
-    
+    [self slk_registerNotifications];
     [UIView performWithoutAnimation:^{
         // Reloads any cached text
         [self slk_reloadTextView];
@@ -222,6 +222,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     // Caches the text before it's too late!
     [self cacheTextView];
+    [self slk_unregisterNotifications];
 }
 
 - (void)viewWillLayoutSubviews
