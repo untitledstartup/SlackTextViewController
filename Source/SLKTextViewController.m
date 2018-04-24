@@ -420,8 +420,37 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     return keyboardHeight;
 }
 
+BOOL IsiPhoneX(void)
+{
+    static BOOL isiPhoneX = NO;
+    static dispatch_once_t onceToken;
+
+    dispatch_once(&onceToken, ^{
+#if TARGET_IPHONE_SIMULATOR
+        NSString *model = NSProcessInfo.processInfo.environment[@"SIMULATOR_MODEL_IDENTIFIER"];
+#else
+
+        struct utsname systemInfo;
+        uname(&systemInfo);
+
+        NSString *model = [NSString stringWithCString:systemInfo.machine
+                                             encoding:NSUTF8StringEncoding];
+#endif
+        isiPhoneX = [model isEqualToString:@"iPhone10,3"] || [model isEqualToString:@"iPhone10,6"];
+    });
+
+    return isiPhoneX;
+}
+
 - (CGFloat)slk_appropriateBottomMargin
 {
+    // A bottom margin is required for iPhone X
+    if (@available(iOS 11.0, *)) {
+        if (!self.textInputbar.isHidden) {
+            return IsiPhoneX() ? 34.0 : 0.0;
+        }
+    }
+
     // A bottom margin is required if the view is extended out of it bounds
     if ((self.edgesForExtendedLayout & UIRectEdgeBottom) > 0) {
         
@@ -432,13 +461,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
             return CGRectGetHeight(tabBar.frame);
         }
     }
-    
-    // A bottom margin is required for iPhone X
-    if (@available(iOS 11.0, *)) {
-        if (!self.textInputbar.isHidden) {
-            return self.view.safeAreaInsets.bottom;
-        }
-    }
+
     
     return 0.0;
 }
