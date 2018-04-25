@@ -12,6 +12,8 @@
 #import "UIResponder+SLKAdditions.h"
 #import "SLKUIConstants.h"
 
+#import <sys/utsname.h>
+
 /** Feature flagged while waiting to implement a more reliable technique. */
 #define SLKBottomPanningEnabled 0
 
