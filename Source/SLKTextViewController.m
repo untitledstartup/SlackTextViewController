@@ -2291,7 +2291,7 @@ BOOL IsiPhoneX(void)
 
 - (void)slk_updateViewConstraints
 {
-    self.textInputbarHC.constant = self.textInputbar.minimumInputbarHeight;
+    self.textInputbarHC.constant = self.textInputbar.hidden ? 0.0 : self.textInputbar.minimumInputbarHeight;
     self.scrollViewHC.constant = [self slk_appropriateScrollViewHeight];
     self.keyboardHC.constant = [self slk_appropriateKeyboardHeightFromRect:CGRectNull];
     
