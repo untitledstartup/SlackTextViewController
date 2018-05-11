@@ -225,6 +225,13 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     // Caches the text before it's too late!
     [self cacheTextView];
     [self slk_unregisterNotifications];
+    
+    // when the view disappears, keyboard auto-closes. this event doesn't
+    // allow the status to be updated properly.
+    // when the view appears again, all keyboard interactions are messed up
+    // due to `slk_isIllogicalKeyboardStatus:` check.
+    // we need to correct the status properly.
+    _keyboardStatus = SLKKeyboardStatusDidHide;
 }
 
 - (void)viewWillLayoutSubviews
