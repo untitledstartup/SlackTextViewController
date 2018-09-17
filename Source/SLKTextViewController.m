@@ -435,17 +435,11 @@ BOOL IsiPhoneX(void)
     static dispatch_once_t onceToken;
 
     dispatch_once(&onceToken, ^{
-#if TARGET_IPHONE_SIMULATOR
-        NSString *model = NSProcessInfo.processInfo.environment[@"SIMULATOR_MODEL_IDENTIFIER"];
-#else
-
-        struct utsname systemInfo;
-        uname(&systemInfo);
-
-        NSString *model = [NSString stringWithCString:systemInfo.machine
-                                             encoding:NSUTF8StringEncoding];
-#endif
-        isiPhoneX = [model isEqualToString:@"iPhone10,3"] || [model isEqualToString:@"iPhone10,6"];
+        UIWindow * const window = UIApplication.sharedApplication.keyWindow;
+        
+        if (@available(iOS 11.0, *)) {
+            isiPhoneX = !UIEdgeInsetsEqualToEdgeInsets(window.safeAreaInsets, UIEdgeInsetsZero);
+        }
     });
 
     return isiPhoneX;
