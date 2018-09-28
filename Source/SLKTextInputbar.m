@@ -142,7 +142,9 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
                                                                                         metrics:nil
                                                                                           views:NSDictionaryOfVariableBindings(subview)]];
             [NSLayoutConstraint activateConstraints:newConstraints];
-            subview.transform = CGAffineTransformMakeTranslation(-8, 0);
+            if ([[[UIDevice currentDevice] systemVersion] compare:@"11.0" options:NSNumericSearch] == NSOrderedSame) {
+                subview.transform = CGAffineTransformMakeTranslation(-8, 0);
+            }
         }
     }
 }
