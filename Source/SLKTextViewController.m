@@ -438,7 +438,7 @@ BOOL IsiPhoneX(void)
         UIWindow * const window = UIApplication.sharedApplication.keyWindow;
         
         if (@available(iOS 11.0, *)) {
-            isiPhoneX = !UIEdgeInsetsEqualToEdgeInsets(window.safeAreaInsets, UIEdgeInsetsZero);
+            isiPhoneX = window.safeAreaInsets.bottom > 0;
         }
     });
 
