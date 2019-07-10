@@ -159,6 +159,7 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     
     self.automaticallyAdjustsScrollViewInsets = YES;
     self.extendedLayoutIncludesOpaqueBars = YES;
+    self.adjustsContentInsetBeforeLayout = YES;
 }
 
 
@@ -1299,6 +1300,7 @@ BOOL IsiPhoneX(void)
 
 - (void)slk_adjustContentConfigurationIfNeeded
 {
+    if (!_adjustsContentInsetBeforeLayout) return;
     UIEdgeInsets contentInset = self.scrollViewProxy.contentInset;
     
     // When inverted, we need to substract the top bars height (generally status bar + navigation bar's) to align the top of the
