@@ -1465,7 +1465,10 @@ BOOL hasSafeAreaInsets(void)
     if (!CGRectEqualToRect(beginFrame, endFrame) || fabs(previousKeyboardHeight - self.keyboardHC.constant) > 0.0)
     {
         // Content Offset correction if not inverted and not auto-completing.
-        if (!self.isInverted && !self.isAutoCompleting) {
+        //
+        // NOTE: Not sure why we need this. This causes a weird bug for iPad.
+        // I will skip the scrollView setting for iPad for now.
+        if (!self.isInverted && !self.isAutoCompleting && [UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPhone) {
             
             CGFloat scrollViewHeight = self.scrollViewHC.constant;
             CGFloat keyboardHeight = self.keyboardHC.constant;
