@@ -430,35 +430,13 @@ CGFloat const SLKAutoCompletionViewDefaultHeight = 140.0;
     return keyboardHeight;
 }
 
-BOOL hasSafeAreaInsets(void)
-{
-    static BOOL isiPhoneX = NO;
-    static dispatch_once_t onceToken;
-
-    dispatch_once(&onceToken, ^{
-        UIWindow * const window = UIApplication.sharedApplication.keyWindow;
-        
-        if (@available(iOS 11.0, *)) {
-            isiPhoneX = window.safeAreaInsets.bottom > 0;
-        }
-    });
-
-    return isiPhoneX;
-}
-
 - (CGFloat)slk_appropriateBottomMargin
 {
     // A bottom margin is required for iPhone X
     if (@available(iOS 11.0, *)) {
         if (!self.textInputbar.isHidden) {
-            const UIUserInterfaceIdiom idiom = [[UIDevice currentDevice] userInterfaceIdiom];
-            if (idiom == UIUserInterfaceIdiomPhone) {
-                return hasSafeAreaInsets() ? 34.0 : 0.0;
-            } else if (idiom == UIUserInterfaceIdiomPad) {
-                return hasSafeAreaInsets() ? 20.0 : 0.0;
-            } else {
-                return 0;
-            }
+            UIWindow * const window = [[UIApplication sharedApplication] keyWindow];
+            return window.safeAreaInsets.bottom;
         }
     }
 
