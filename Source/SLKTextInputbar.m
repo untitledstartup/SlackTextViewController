@@ -113,11 +113,6 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
 
 - (void)updateConstraints {
     [super updateConstraints];
-    NSString* const systemVersion = [[UIDevice currentDevice] systemVersion];
-    NSComparisonResult compareResult = [systemVersion compare:@"13.0" options: NSNumericSearch];
-    if (compareResult == NSOrderedSame || compareResult == NSOrderedDescending) {
-        return;
-    }
     
     // iOS 11.0 only bug fix.
     for (UIView * subview in [self subviews]) {
@@ -147,6 +142,7 @@ NSString * const SLKTextInputbarDidMoveNotification =   @"SLKTextInputbarDidMove
                                                                                         metrics:nil
                                                                                           views:NSDictionaryOfVariableBindings(subview)]];
             [NSLayoutConstraint activateConstraints:newConstraints];
+            NSString* const systemVersion = [[UIDevice currentDevice] systemVersion];
             // ver >= 11.0 && ver < 11.2
             if ([systemVersion compare:@"11.0" options:NSNumericSearch] != NSOrderedAscending &&
                 [systemVersion compare:@"11.2" options:NSNumericSearch] == NSOrderedAscending) {
