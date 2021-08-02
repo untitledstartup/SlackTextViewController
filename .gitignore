@@ -21,3 +21,4 @@ Carthage/
 SlackTextViewController/Pods
 SlackTextViewController/Podfile.lock
 SlackTextViewController/*.xcworkspace
+**/*.xcodeproj
