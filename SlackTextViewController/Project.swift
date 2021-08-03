@@ -15,6 +15,7 @@ let project = Project(name: "SlackTextViewController",
                                 "../Source/**/*.m"
                                ],
                                headers: Headers(public: [
+                                "SlackTextViewController/*.h",
                                 "../Source/**/*.h"
                                ]),
                                settings: Settings(configurations: [
