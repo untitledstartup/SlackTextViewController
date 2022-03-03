@@ -18,8 +18,9 @@ let project = Project(name: "SlackTextViewController",
                                 "SlackTextViewController/*.h",
                                 "../Source/**/*.h"
                                ]),
-                               settings: Settings(configurations: [
-                                .debug(name: "Debug", xcconfig: "SlackTextViewController.xcconfig"),
-                                .release(name: "Release", xcconfig: "SlackTextViewController.xcconfig")
-                               ]))
+                               settings: Settings(
+                                 configurations: [
+                                  .debug(name: "Debug", settings: ["EXCLUDED_ARCHS": "arm64"], xcconfig: "SlackTextViewController.xcconfig"),
+                                  .release(name: "Release", xcconfig: "SlackTextViewController.xcconfig")
+                                ]))
                       ])
