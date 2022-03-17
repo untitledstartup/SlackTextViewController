@@ -20,7 +20,7 @@ let project = Project(name: "SlackTextViewController",
                                ]),
                                settings: Settings(
                                  configurations: [
-                                  .debug(name: "Debug", settings: ["EXCLUDED_ARCHS": "arm64"], xcconfig: "SlackTextViewController.xcconfig"),
+                                  .debug(name: "Debug", settings: ["EXCLUDED_ARCHS[sdk=iphonesimulator*]": "arm64"], xcconfig: "SlackTextViewController.xcconfig"),
                                   .release(name: "Release", xcconfig: "SlackTextViewController.xcconfig")
                                 ]))
                       ])
