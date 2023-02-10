@@ -4,6 +4,7 @@ import ProjectDescriptionHelpers
 let project = Project(
     name: "SlackTextViewController",
     organizationName: BuildInfo.organizationName,
+    options: .options(developmentRegion: "en"),
     targets: [
         Target(
             name: "SlackTextViewController",
@@ -16,7 +17,7 @@ let project = Project(
             sources: [
                 "../Source/**/*.m"
             ],
-            headers: Headers(public: [
+            headers: Headers.headers(public: [
                 "SlackTextViewController/*.h",
                 "../Source/**/*.h"
             ]),
