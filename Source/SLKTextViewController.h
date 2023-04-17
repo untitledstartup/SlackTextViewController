@@ -625,6 +625,7 @@ NS_CLASS_AVAILABLE_IOS(7_0) @interface SLKTextViewController : UIViewController 
 - (void)slk_setupViewConstraints;
 - (void)slk_updateViewConstraints;
 - (void)slk_registerNotifications;
+- (void)slk_enableTypingSuggestionIfNeeded;
 @property (nonatomic, strong) NSLayoutConstraint *keyboardHC;
 
 @end
