@@ -6,13 +6,13 @@ let project = Project(
     organizationName: BuildInfo.organizationName,
     options: .options(developmentRegion: "en"),
     targets: [
-        Target(
+        Target.target(
             name: "SlackTextViewController",
-            platform: .iOS,
+            destinations: .iOS,
             product: .framework,
             productName: "SlackTextViewController",
             bundleId: "com.slack.SlackTextViewController",
-            deploymentTarget: BuildInfo.deploymentTarget,
+            deploymentTargets: BuildInfo.deploymentTarget,
             infoPlist: .file(path: "SlackTextViewController/Info.plist"),
             sources: [
                 "../Source/**/*.m"
