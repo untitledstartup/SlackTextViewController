@@ -12,7 +12,7 @@ let project = Project(
             product: .framework,
             productName: "SlackTextViewController",
             bundleId: "com.slack.SlackTextViewController",
-            deploymentTargets: BuildInfo.deploymentTarget,
+            deploymentTargets: BuildInfo.deploymentTargets,
             infoPlist: .file(path: "SlackTextViewController/Info.plist"),
             sources: [
                 "../Source/**/*.m"
